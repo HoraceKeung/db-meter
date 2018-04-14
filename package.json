@@ -16,6 +16,7 @@
     "build": "nuxt build && electron-builder"
   },
   "dependencies": {
+    "audio-stream-meter": "^1.0.4",
     "nuxt": "^1.4.0"
   },
   "devDependencies": {
