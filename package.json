@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "audio-stream-meter": "^1.0.4",
+    "bootstrap": "^4.1.0",
     "nuxt": "^1.4.0"
   },
   "devDependencies": {

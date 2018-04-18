@@ -19,6 +19,7 @@ module.exports = {
 	},
 	dev: process.env.NODE_ENV === 'DEV',
 	css: [
+		'bootstrap/dist/css/bootstrap.css',
 		'@/assets/css/global.css'
 	]
 }
