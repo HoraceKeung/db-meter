@@ -1,6 +1,8 @@
 const path = require('path')
 
-module.exports = {
+const prodRouterBase = process.env.NODE_ENV === 'DEV' ? {} : {router: {base: './'}}
+
+module.exports = {...prodRouterBase,
 	mode: 'spa',
 	head: {title: 'Decibel meter'}, // Headers of the page
 	loading: false, // Disable default loading bar
@@ -25,6 +27,5 @@ module.exports = {
 		'bootstrap-css-only/css/bootstrap.css',
 		'@/assets/css/global.css'
 	],
-	rootDir: __dirname,
-	router: {base: './'}
+	rootDir: __dirname
 }
