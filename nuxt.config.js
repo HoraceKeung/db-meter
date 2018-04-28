@@ -1,5 +1,3 @@
-const path = require('path')
-
 const prodRouterBase = process.env.NODE_ENV === 'DEV' ? {} : {router: {base: './'}}
 
 module.exports = {...prodRouterBase,
