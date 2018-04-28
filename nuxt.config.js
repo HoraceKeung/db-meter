@@ -1,7 +1,10 @@
+const path = require('path')
+
 module.exports = {
 	mode: 'spa',
 	head: {title: 'Decibel meter'}, // Headers of the page
 	loading: false, // Disable default loading bar
+	generate: {dir: 'dist/electron'},
 	build: {
 		extend (config, { isDev, isClient }) {
 			if (isDev && isClient) {
@@ -18,6 +21,10 @@ module.exports = {
 		}
 	},
 	dev: process.env.NODE_ENV === 'DEV',
-	modules: ['bootstrap-vue/nuxt'],
-	css: ['@/assets/css/global.css']
+	css: [
+		'bootstrap-css-only/css/bootstrap.css',
+		'@/assets/css/global.css'
+	],
+	rootDir: __dirname,
+	router: {base: './'}
 }

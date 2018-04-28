@@ -2,7 +2,6 @@
 **  Nuxt
 */
 let config = require('./nuxt.config.js')
-config.rootDir = __dirname // for electron-builder
 let _NUXT_URL_ = null
 const http = require('http')
 // Build only in dev mode
@@ -26,6 +25,7 @@ console.log(`Nuxt working on ${_NUXT_URL_}`)
 /*
 ** Electron
 */
+require('electron-debug')({showDevTools: true})
 let win = null // Current window
 const electron = require('electron')
 const path = require('path')
@@ -47,7 +47,7 @@ const newWin = () => {
 			}).on('error', pollServer)
 		}
 		pollServer()
-	} else { return win.loadURL(_NUXT_URL_) }
+	} else { win.loadURL(_NUXT_URL_) }
 }
 app.on('ready', newWin)
 app.on('window-all-closed', () => app.quit())
