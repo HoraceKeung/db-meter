@@ -15,15 +15,21 @@ body {
 	box-sizing: border-box;
 	margin: 0;
 }
+:disabled, .btn:disabled {
+	cursor: no-drop;
+}
 .btn, .pointer {
 	cursor: pointer;
 }
 .primary {
 	color: var(--primary);
 }
+.bg-primary {
+	background-color: var(--primary) !important;
+}
 .secondary {
 	color: var(--secondary);
 }
-:disabled {
-	cursor: no-drop;
+.bg-secondary {
+	background-color: var(--secondary) !important;
 }

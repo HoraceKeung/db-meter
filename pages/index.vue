@@ -1,31 +1,36 @@
 <template>
-	<section>
-		<div>
-			<select v-model="audioSource" :disabled="measuring">
-				<option v-for="d in audioDevices" :key="d.deviceId" :value="d.deviceId" :selected="d.deviceId===audioSource">{{d.label}}</option>
-			</select>
-			<input type="number">
-			<div class="btn-group" role="group" aria-label="Control buttons">
-				<button type="button" class="btn btn-success" @click="start" :disabled="measuring">Start</button>
-				<button type="button" class="btn btn-warning" @click="finish">Finish</button>
-				<button type="button" class="btn btn-danger" @click="reset">Reset</button>
+	<section class="container-fluid py-3">
+		<div class="row">
+			<div class="col-lg-6">
+				<input-control/>
+				<brand-control/>
+				<div class="card bg-light p-3 mb-3">
+					<div class="ml-auto btn-group">
+						<button type="button" class="btn btn-success" @click="start" :disabled="measuring">Start</button>
+						<button type="button" class="btn btn-warning" @click="finish">Finish</button>
+						<button type="button" class="btn btn-danger" @click="reset">Reset</button>
+					</div>
+				</div>
 			</div>
-			<p>{{Math.round(measuring?decibel:maxRecord)}}dB</p>
+			<div class="col-lg-6"><output-display/></div>
 		</div>
 	</section>
 </template>
 
 <script>
 import AudioStreamMeter from 'audio-stream-meter'
+import throttle from 'lodash.throttle'
+import InputControl from '~/components/InputControl'
+import BrandControl from '~/components/BrandControl'
+import OutputDisplay from '~/components/OutputDisplay'
 export default {
-	mounted () {
-		this.$nextTick(() => {
-			// https://webrtc.github.io/samples/src/content/devices/input-output/
-			navigator.mediaDevices.enumerateDevices().then(devices => {
-				this.audioDevices = devices.filter(d => d.kind === 'audioinput')
-				this.audioSource = this.audioDevices.length > 0 ? this.audioDevices[0].deviceId : null
-			})
-		})
+	components: {InputControl, BrandControl, OutputDisplay},
+	computed: {
+		audioSource () { return this.$store.state.audioSource },
+		measuring () { return this.$store.state.measuring },
+		maxDb () { return this.$store.state.maxDb },
+		decibel () { return this.$store.state.decibel },
+		maxRecord () { return this.$store.state.maxRecord }
 	},
 	methods: {
 		start () {
@@ -33,13 +38,18 @@ export default {
 				window.stream = stream
 				this.audioContext = new AudioContext()
 				this.mediaStream = this.audioContext.createMediaStreamSource(stream)
-				this.meter = AudioStreamMeter.audioStreamProcessor(this.audioContext, () => {
-					this.decibel = 20 * Math.log10(this.meter.volume * Math.pow(10, this.maxDb / 20))
-					this.maxRecord = this.maxRecord > this.decibel ? this.maxRecord : this.decibel
-				})
+				this.meter = AudioStreamMeter.audioStreamProcessor(this.audioContext, throttle(() => {
+					if (this.meter) {
+						const db = Math.round(20 * Math.log10(this.meter.volume * Math.pow(10, this.maxDb / 20)))
+						if (db !== this.decibel && db !== -Infinity) {
+							this.$store.commit('setDecibel', db)
+							if (db > this.maxRecord) { this.$store.commit('setMaxRecord', db) }
+						}
+					}
+				}, 1000 / this.refreshRate), {inputChannels: this.$store.state.numOfInputChannels, throttle: 10})
 				this.mediaStream.connect(this.meter)
 				stream.onended = this.meter.close.bind(this.meter)
-				this.measuring = true
+				this.$store.commit('setMeasuring', true)
 			})
 		},
 		finish () {
@@ -47,29 +57,21 @@ export default {
 			if (this.audioContext) { this.audioContext.close(); this.audioContext = null }
 			if (this.mediaStream) { this.mediaStream.disconnect(); this.mediaStream = null }
 			this.meter = null
-			this.decibel = 0
-			this.measuring = false
+			this.$store.commit('setDecibel', 0)
+			this.$store.commit('setMeasuring', false)
 		},
 		reset () {
 			this.finish()
-			this.maxRecord = 0
+			this.$store.commit('setMaxRecord', 0)
 		}
 	},
 	data () {
 		return {
-			measuring: false,
-			audioDevices: [],
-			audioSource: null,
 			audioContext: null,
 			meter: null,
 			mediaStream: null,
-			decibel: 0,
-			maxDb: 140,
-			maxRecord: 0
+			refreshRate: 10 // Refresh per second
 		}
 	}
 }
 </script>
-
-<style scoped>
-</style>

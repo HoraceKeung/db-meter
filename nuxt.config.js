@@ -1,3 +1,4 @@
+const path = require('path')
 const prodRouterBase = process.env.NODE_ENV === 'DEV' ? {} : {router: {base: './'}}
 
 module.exports = {...prodRouterBase,
@@ -7,6 +8,9 @@ module.exports = {...prodRouterBase,
 	generate: {dir: 'dist/electron'},
 	build: {
 		extend (config, { isDev, isClient }) {
+			// Fix deepmerge webpack bug: https://www.npmjs.com/package/deepmerge
+			const alias = config.resolve.alias = config.resolve.alias || {}
+			alias['deepmerge$'] = path.resolve(__dirname, 'node_modules/deepmerge/dist/umd.js')
 			if (isDev && isClient) {
 				// Run ESLint on save
 				config.module.rules.push({
