@@ -27,7 +27,9 @@ module.exports = {...prodRouterBase,
 	dev: process.env.NODE_ENV === 'DEV',
 	css: [
 		'bootstrap-css-only/css/bootstrap.css',
+		'vue-croppa/dist/vue-croppa.css',
 		'@/assets/css/global.css'
 	],
-	rootDir: __dirname
+	rootDir: __dirname,
+	plugins: ['~/plugins/init.js']
 }

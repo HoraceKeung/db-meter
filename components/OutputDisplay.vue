@@ -1,5 +1,6 @@
 <template>
 	<div class="border" :style="'background-color: '+rgba+';'">
+		<img v-if="$store.state.logo" width="100" height="100" class="border" :src="$store.state.logo">
 		<span class="text-white">{{measuring?decibel:maxRecord}}dB</span>
 	</div>
 </template>

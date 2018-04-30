@@ -7,7 +7,8 @@ const persist = new VuexPersist({
 		return {
 			maxDb: state.maxDb,
 			numOfInputChannels: state.numOfInputChannels,
-			color: state.color
+			color: state.color,
+			logo: state.logo
 		}
 	}
 })
@@ -21,7 +22,8 @@ export const state = () => ({
 	decibel: 0,
 	maxRecord: 0,
 	numOfInputChannels: 2,
-	color: null
+	color: null,
+	logo: null
 })
 
 export const mutations = {
@@ -45,5 +47,8 @@ export const mutations = {
 	},
 	setColor (state, color) {
 		state.color = color
+	},
+	setLogo (state, logo) {
+		state.logo = logo
 	}
 }
