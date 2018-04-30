@@ -18,7 +18,7 @@ export default {
 	components: {Chrome},
 	computed: {
 		color: {
-			get () { return this.$store.state.color },
+			get () { return this.$store.state.color || '#000' },
 			set (val) { this.$store.commit('setColor', val) }
 		}
 	}

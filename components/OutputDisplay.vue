@@ -11,7 +11,7 @@ export default {
 		decibel () { return this.$store.state.decibel },
 		maxRecord () { return this.$store.state.maxRecord },
 		rgba () {
-			if (this.$store.state.color.rgba) {
+			if (this.$store.state.color && this.$store.state.color.rgba) {
 				const r = this.$store.state.color.rgba.r
 				const g = this.$store.state.color.rgba.g
 				const b = this.$store.state.color.rgba.b
