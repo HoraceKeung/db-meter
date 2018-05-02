@@ -1,12 +1,19 @@
 <template>
-	<div class="border" :style="'background-color: '+rgba+';'">
-		<img class="w-100" :src="baseUrl+'/img/db_meter_overlay.png'">
+	<div class="d-flex flex-column">
+		<div class="border d-flex" :style="'background-color: '+rgba+';'">
+			<div><img class="w-100" :src="baseUrl+'/img/db_meter_overlay.png'"></div>
+			<div class="position-relative">
+				<div class="position-absolute" style="bottom: 0; right: 0;">
+					<h1 class="text-white mr-3">{{db}}dB</h1>
+				</div>
+				<div v-for="n in 23" v-show="n <= numOfBars" :key="'bar'+n" class="position-absolute h-100" style="bottom: 0; right: 0;">
+					<img class="h-100" :src="baseUrl+'/img/bar/'+n+'.png'">
+				</div>
+			</div>
+		</div>
 		<div class="position-relative">
 			<div class="position-absolute w-100 text-center" style="bottom: 0;">
 				<img v-if="$store.state.logo" style="width: 10%;" :src="$store.state.logo">
-			</div>
-			<div class="position-absolute w-100 d-flex" style="bottom: 0;">
-				<h1 class="db-text text-white ml-auto mr-3">{{measuring?decibel:maxRecord}}dB</h1>
 			</div>
 		</div>
 	</div>
@@ -15,9 +22,6 @@
 <script>
 export default {
 	computed: {
-		measuring () { return this.$store.state.measuring },
-		decibel () { return this.$store.state.decibel },
-		maxRecord () { return this.$store.state.maxRecord },
 		rgba () {
 			if (this.$store.state.color && this.$store.state.color.rgba) {
 				const r = this.$store.state.color.rgba.r
@@ -26,7 +30,9 @@ export default {
 				const a = this.$store.state.color.rgba.a
 				return 'rgba(' + [r, g, b, a].join(', ') + ')'
 			} else { return '#000' }
-		}
+		},
+		db () { return this.$store.state.measuring ? this.$store.state.decibel : this.$store.state.maxRecord },
+		numOfBars () { return this.db > 0 ? Math.round(23 * this.db / this.$store.state.maxDb) : 0 }
 	}
 }
 </script>
