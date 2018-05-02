@@ -15,7 +15,7 @@
 		]
 	},
 	"scripts": {
-		"dev": "cross-env NODE_ENV=DEV electron ./main.js",
+		"dev": "cross-env NODE_ENV=development electron ./main.js",
 		"build": "nuxt generate && cp main.js dist/electron/ && cp nuxt.config.js dist/electron/ && electron-builder"
 	},
 	"dependencies": {

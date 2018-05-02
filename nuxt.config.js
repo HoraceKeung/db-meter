@@ -1,5 +1,5 @@
 const path = require('path')
-const prodRouterBase = process.env.NODE_ENV === 'DEV' ? {} : {router: {base: './'}}
+const prodRouterBase = process.env.NODE_ENV === 'development' ? {} : {router: {base: './'}}
 
 module.exports = {...prodRouterBase,
 	mode: 'spa',
@@ -24,7 +24,7 @@ module.exports = {...prodRouterBase,
 			if (isClient) { config.target = 'electron-renderer' }
 		}
 	},
-	dev: process.env.NODE_ENV === 'DEV',
+	dev: process.env.NODE_ENV === 'development',
 	css: [
 		'bootstrap-css-only/css/bootstrap.css',
 		'vue-croppa/dist/vue-croppa.css',

@@ -1,6 +1,6 @@
 <template>
 	<div class="border" :style="'background-color: '+rgba+';'">
-		<img class="w-100" src="~/assets/img/db_meter_overlay.png">
+		<img class="w-100" :src="baseUrl+'/img/db_meter_overlay.png'">
 		<div class="position-relative">
 			<div class="position-absolute w-100 text-center" style="bottom: 0;">
 				<img v-if="$store.state.logo" style="width: 10%;" :src="$store.state.logo">
