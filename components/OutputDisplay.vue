@@ -1,10 +1,10 @@
 <template>
 	<div class="d-flex flex-column">
-		<div class="border d-flex" :style="'background-color: '+rgba+';'">
+		<div :class="'d-flex'+(demo?' border':'')" :style="'background-color: '+rgba+';'">
 			<div><img class="w-100" :src="baseUrl+'/img/db_meter_overlay.png'"></div>
 			<div class="position-relative">
 				<div class="position-absolute" style="bottom: 0; right: 0;">
-					<h1 class="text-white mr-3">{{db}}dB</h1>
+					<h1 :class="'text-white mr-3 '+(demo?'demo-':'')+'db-text'">{{db}}dB</h1>
 				</div>
 				<div v-for="n in 23" v-show="n <= numOfBars" :key="'bar'+n" class="position-absolute h-100" style="bottom: 0; right: 0;">
 					<img class="h-100" :src="baseUrl+'/img/bar/'+n+'.png'">
@@ -21,6 +21,9 @@
 
 <script>
 export default {
+	props: {
+		demo: {type: Boolean, default: true}
+	},
 	computed: {
 		rgba () {
 			if (this.$store.state.color && this.$store.state.color.rgba) {
@@ -38,4 +41,12 @@ export default {
 </script>
 
 <style scoped>
+.db-text, .demo-db-text {
+	font-size: 6vw;
+}
+@media (min-width: 992px) {
+	.demo-db-text {
+		font-size: 3vw;
+	}
+}
 </style>

@@ -2,7 +2,7 @@
 	<div class="card bg-light p-3 mb-3">
 		<label>Display</label>
 		<div class="input-group">
-			<select  class="custom-select" v-model="selectedDisplay" :disabled="win">
+			<select class="custom-select pointer" v-model="selectedDisplay" :disabled="win">
 				<option v-for="(d, i) in displays" :key="d.id" :value="d.id">{{'Display ' + (i + 1) + ' [' + d.size.width + 'x' + d.size.height + ']'}}</option>
 			</select>
 			<div class="input-group-append">
@@ -17,24 +17,19 @@ import { screen, ipcRenderer, remote } from 'electron'
 export default {
 	created () {
 		this.displays = screen.getAllDisplays()
-		console.log(JSON.stringify(this.displays, null, 4))
 	},
 	methods: {
 		getTargetPos(){
-			const found = this.displays.find(d => {
-				return d.id === this.selectedDisplay
-			})
-			if (typeof found !== 'undefined')
-				return found.bounds
+			const found = this.displays.find(d => { return d.id === this.selectedDisplay })
+			if (typeof found !== 'undefined') { return found.bounds }
 		},
 		toggleDisplay () {
 			if (this.win && !this.win.isDestroyed()) {
-				this.win.destroy()
-				this.win = null
+				this.closeWin()
 			} else if (this.selectedDisplay) {
 				this.win = new remote.BrowserWindow({
-					width: this.getTargetPos().width,
-					height: this.getTargetPos().height,
+					minWidth: this.getTargetPos().width,
+					minHeight: this.getTargetPos().height,
 					frame: false,
 					x: this.getTargetPos().x,
 					y: this.getTargetPos().y,
@@ -48,11 +43,11 @@ export default {
 					show: false
 				})
 				this.win.loadURL(window.location.href + 'display')
-				this.win.once('ready-to-show', () => {
-					this.win.show()
-				})
+				this.win.once('ready-to-show', () => { this.win.show() })
+				this.win.on('closed', () => { this.closeWin() })
 			}
-		}
+		},
+		closeWin () { if (this.win) { this.win.destroy(); this.win = null } }
 	},
 	data () {
 		return {
@@ -61,8 +56,6 @@ export default {
 			selectedDisplay: null
 		}
 	},
-	beforeDestroy () {
-		if (this.win) { this.win.destroy(); this.win = null }
-	}
+	beforeDestroy () { this.closeWin() }
 }
 </script>

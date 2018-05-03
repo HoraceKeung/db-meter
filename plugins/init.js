@@ -9,3 +9,9 @@ Vue.mixin({
 		}
 	}
 })
+
+export default function ({ store }) {
+	store.commit('setMeasuring', false)
+	store.commit('setMaxRecord', 0)
+	store.commit('setDecibel', 0)
+}

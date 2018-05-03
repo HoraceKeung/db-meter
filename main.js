@@ -35,7 +35,7 @@ const newWin = () => {
 		icon: path.join(__dirname, 'static/icon.png')
 	})
 	win.maximize()
-	win.on('closed', () => win = null)
+	win.on('closed', () => { win = null; app.quit() })
 	if (config.dev) {
 		// Install vue dev tool and open chrome dev tools
 		const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer')

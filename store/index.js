@@ -5,7 +5,10 @@ const persist = new VuexPersist({
 	path: app.getPath('userData'),
 	reducer: (state) => {
 		return {
+			measuring: state.measuring,
 			maxDb: state.maxDb,
+			decibel: state.decibel,
+			maxRecord: state.maxRecord,
 			numOfInputChannels: state.numOfInputChannels,
 			color: state.color,
 			logo: state.logo
