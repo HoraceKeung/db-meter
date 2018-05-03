@@ -4,6 +4,7 @@
 			<div class="col-lg-6">
 				<input-control/>
 				<brand-control/>
+				<display-control/>
 				<div class="card bg-light p-3 mb-3">
 					<div class="ml-auto btn-group">
 						<button type="button" class="btn btn-success" @click="start" :disabled="measuring">Start</button>
@@ -22,9 +23,10 @@ import AudioStreamMeter from 'audio-stream-meter'
 import throttle from 'lodash.throttle'
 import InputControl from '~/components/InputControl'
 import BrandControl from '~/components/BrandControl'
+import DisplayControl from '~/components/DisplayControl'
 import OutputDisplay from '~/components/OutputDisplay'
 export default {
-	components: {InputControl, BrandControl, OutputDisplay},
+	components: {InputControl, BrandControl, DisplayControl, OutputDisplay},
 	computed: {
 		audioSource () { return this.$store.state.audioSource },
 		measuring () { return this.$store.state.measuring },
