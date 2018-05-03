@@ -42,7 +42,7 @@ export default {
 					fullscreen: true,
 					show: false
 				})
-				this.win.loadURL(window.location.href + 'display')
+				this.win.loadURL(this.baseRoute + 'display')
 				this.win.once('ready-to-show', () => { this.win.show() })
 				this.win.on('closed', () => { this.closeWin() })
 			}

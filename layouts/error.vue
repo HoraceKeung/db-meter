@@ -4,6 +4,8 @@
 
 <script>
 export default {
-	beforeCreate () { this.$router.push('/') }
+	beforeCreate () {
+		this.$router.push('/' + (this.$route.query.page || ''))
+	}
 }
 </script>

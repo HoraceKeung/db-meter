@@ -6,6 +6,9 @@ Vue.mixin({
 	computed: {
 		baseUrl () {
 			return process.env.NODE_ENV === 'development' ? '' : app.getAppPath() + '/dist/electron'
+		},
+		baseRoute () {
+			return process.env.NODE_ENV === 'development' ? window.location.href : app.getAppPath() + '/dist/electron/index.html?page='
 		}
 	}
 })
