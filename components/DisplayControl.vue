@@ -26,21 +26,21 @@ export default {
 		toggleDisplay () {
 			if (this.win && !this.win.isDestroyed()) {
 				this.closeWin()
-			} else if (this.selectedDisplay) {
+			} else if (this.selectedDisplay !== null) {
 				this.win = new remote.BrowserWindow({
 					minWidth: this.getTargetPos().width,
+					width: this.getTargetPos().width,
 					minHeight: this.getTargetPos().height,
+					height: this.getTargetPos().height,
 					frame: false,
 					x: this.getTargetPos().x,
 					y: this.getTargetPos().y,
 					alwaysOnTop: true,
 					skipTaskbar: true,
-					resizable: false,
 					movable: false,
 					minimizable: false,
-					maximizable: false,
-					fullscreen: true,
-					show: false
+					show: false,
+					kiosk: true
 				})
 				this.win.loadURL(this.baseRoute + 'display')
 				this.win.once('ready-to-show', () => { this.win.show() })
