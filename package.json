@@ -12,7 +12,11 @@
 		},
 		"files": [
 			"dist/electron/**/*"
-		]
+		],
+		"linux": {
+			"icon": "static",
+			"target": ["deb"]
+		}
 	},
 	"scripts": {
 		"dev": "cross-env NODE_ENV=development electron ./main.js",
